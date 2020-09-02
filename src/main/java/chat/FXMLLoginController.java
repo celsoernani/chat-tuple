@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jspace.RemoteSpace;
 
@@ -26,6 +28,9 @@ public class FXMLLoginController  {
     public String classRoomselected; 
     public Client client;
 	public Server server;
+    private List<String> roomsExisted = new ArrayList<String>();
+
+    
 
     EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
         public void handle(ActionEvent e) 
@@ -37,9 +42,11 @@ public class FXMLLoginController  {
     }; 		
        
     public void createClass() throws IOException {
+
         try {
         		 String roomname = classroomNameTextfield.getText();
                  this.server.addClassRoom(roomname);
+    	      	 this.roomsExisted.add(roomname);
                  MenuItem classroom = new MenuItem(roomname);
                  classroom.setOnAction(event1);
                  classesRooms.getItems().add(classroom); 
@@ -61,12 +68,12 @@ public class FXMLLoginController  {
     			 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLChat.fxml"));
     	            Parent root1 = (Parent) fxmlLoader.load();
     	            con =(FXMLChatController)fxmlLoader.getController();
-    	            System.out.println(con);
     	            con.setUsernameLabel(usernameTextfield.getText());
     	            con.setRoomLabel(classRoomselected);
     	            con.setClient(client);
+    	            con.setRoomsExisted(this.roomsExisted);
     	            RemoteSpace chat = new RemoteSpace("tcp://127.0.0.1:9001/"+classRoomselected+"?keep");
-    	            Listener listener = new Listener(chat,client,con);
+    	            Listener listener = new Listener(chat,client,con, server.getUSers());
     	            listener.run();
     	            Stage stage = new Stage();
     	            stage.setTitle("ch@T TUPLE");   
@@ -86,13 +93,11 @@ public class FXMLLoginController  {
     @FXML
     public void initialize() {
     	connectToServer();
-    
     }
     
     private void connectToServer(){
         System.out.println("Conectando ao servidor");
 		this.server = new Server();
-		// server.run();
     }
     
    

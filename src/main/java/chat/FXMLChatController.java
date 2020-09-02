@@ -15,7 +15,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 
 public class FXMLChatController implements Initializable {
@@ -23,12 +27,15 @@ public class FXMLChatController implements Initializable {
     @FXML private TextArea messageBox;
     @FXML private Label usernameLabel;
     @FXML private Label roomNameID;
-    // @FXML private ListView userList;
+    @FXML private ListView<Client> userList;
+    @FXML private MenuButton classesRooms;
     @FXML private ImageView userImageView;
     @FXML private Button buttonSend;
     @FXML ListView<HBox> chatPane;
     @FXML BorderPane borderPane;
     public Client client;
+    private List<String> roomsExisted;
+
 
 
     public void sendButtonAction() throws IOException {
@@ -43,6 +50,18 @@ public class FXMLChatController implements Initializable {
         this.usernameLabel.setText(username);
     }
     
+    public void setRoomsExisted(List<String> rooms) {
+        this.roomsExisted = rooms;
+      
+        for(String room : roomsExisted) {
+             MenuItem classroom = new MenuItem(room);
+             classesRooms.getItems().add(classroom);
+             // classroom.setOnAction(event1);
+        	}
+        
+        classesRooms.setText(roomsExisted.get(0));
+    }
+    
 
     public void setRoomLabel(String roomname) {
         this.roomNameID.setText(roomname);
@@ -53,9 +72,8 @@ public class FXMLChatController implements Initializable {
         this.client = client;
     }
     
+    
     public synchronized void addToChat(final Message msg) {
-        System.out.println("aqui" + this.usernameLabel);
-
         final Task<HBox> othersMessages = new Task<HBox>() {
             @Override
             public HBox call() throws Exception {
@@ -124,10 +142,7 @@ public class FXMLChatController implements Initializable {
 
 
     public void initialize(URL location, ResourceBundle resources) {
-     
-
-        /* Added to prevent the enter from adding a new line to inputMessageBox */
-        messageBox.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+             messageBox.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent ke) {
 			    if (ke.getCode().equals(KeyCode.ENTER)) {
 			        try {
@@ -141,38 +156,14 @@ public class FXMLChatController implements Initializable {
 		});
 
     }
-    /*
-    public void setUserList(Message msg) {
-        logger.info("setUserList() method Enter");
-        Platform.runLater(() -> {
-            ObservableList<User> users = FXCollections.observableList(msg.getUsers());
-            userList.setItems(users);
-            userList.setCellFactory(new CellRenderer());
-            setOnlineLabel(String.valueOf(msg.getUserlist().size()));
-        });
-        logger.info("setUserList() method Exit");
-    */
-    /*
-    public void logoutScene() {
+    public void setUserList(final List<Client> usersList) {
         Platform.runLater(new Runnable() {
 			public void run() {
-			    FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
-			    Parent window = null;
-			    try {
-			        window = (Pane) fmxlLoader.load();
-			    } catch (IOException e) {
-			        e.printStackTrace();
-			    }
-			    Stage stage = MainLauncher.getPrimaryStage();
-			    Scene scene = new Scene(window);
-			    stage.setMaxWidth(350);
-			    stage.setMaxHeight(420);
-			    stage.setResizable(false);
-			    stage.setScene(scene);
-			    stage.centerOnScreen();
+			    ObservableList<Client> users = FXCollections.observableList(usersList);
+			    userList.setItems(users);
+			    userList.setCellFactory(new CellRenderer());
 			}
 		});
-    }
-        */
-
+}
+    
 }

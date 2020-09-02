@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -45,8 +46,9 @@
             </ListView>
             <AnchorPane prefHeight="126.0" prefWidth="217.0">
                <children>
-                  <Label layoutX="71.0" layoutY="33.0" prefHeight="17.0" prefWidth="78.0" text="Nome da Sala" textAlignment="CENTER" />
+                  <Label layoutX="96.0" layoutY="38.0" prefHeight="17.0" prefWidth="28.0" text="Sala" textAlignment="CENTER" />
                   <Label fx:id="roomNameID" layoutX="94.0" layoutY="64.0" text="Label" />
+                  <MenuButton fx:id="classesRooms" layoutX="68.0" layoutY="58.0" mnemonicParsing="false" text="Selecione" />
                </children>
             </AnchorPane>
          </children>

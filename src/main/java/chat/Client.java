@@ -16,13 +16,17 @@ public String userName;
 	 }
 
    public void createChat(String uri) throws IOException, IOException {
-		System.out.println(uri);	
         this.chat = new RemoteSpace(uri);
     }
    
+   public void setChat(RemoteSpace newChat, String newClassRoom) {
+       this.chat = newChat;
+       this.classRoom = newClassRoom;
+   }
+   
    public void sendMessage(String message) {
 		try {	
-			this.chat.put(userName, message);
+			this.chat.put(userName, message, classRoom);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

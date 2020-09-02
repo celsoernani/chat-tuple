@@ -3,6 +3,7 @@ package chat;
 import java.net.URI;
 
 import org.jspace.FormalField;
+import org.jspace.RemoteSpace;
 import org.jspace.SequentialSpace;
 import org.jspace.SpaceRepository;
 import java.util.*;
@@ -14,6 +15,7 @@ public class Server {
 	String uri = "tcp://127.0.0.1:9001/?keep";
 	static public String nameRoom;
     private List<Client> clientList;
+
 
 
     
@@ -36,7 +38,11 @@ public class Server {
     		repository.add(nameClass, chat);
     		nameRoom = nameClass;
             System.out.println("Espaco " + nameClass + " criado com sucesso");
+    }
     
+    
+    public List<Client> getUSers() { 
+		return clientList;
     }
     
     
